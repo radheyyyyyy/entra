@@ -51,12 +51,18 @@ async function main() {
     console.log("Web crawler started")
     await findLatestNews();
     for (const ele of allNews) {
+        const res=await news.find({
+                link:ele.link,
+                source:ele.source,
+                title:ele.data
+            });
+        if(typeof (res[0])==="undefined"){
         await news.create({
             link:ele.link,
             source:ele.source,
-            data:ele.data
+            title:ele.data
         })
-    }
+    }}
 
 }
 
