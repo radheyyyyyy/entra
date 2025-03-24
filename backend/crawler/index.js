@@ -1,14 +1,15 @@
-import { get } from "axios";
+
 import { load } from "cheerio";
-import { news } from "./db";
+import { news } from "../mongo/db.js";
 import { disconnect } from "mongoose";
+import axios from "axios";
 const allNews=[];
 async function findLatestNews() {
     // Start all axios requests simultaneously
     const [ntaResponse, dheResponse, acpcResponse] = await Promise.all([
-        get("https://nta.ac.in/"),
-        get("https://www.education.gov.in/higher_education"),
-        get("https://gujacpc.admissions.nic.in/home-8/be-b-tech/")
+        await axios.get("https://nta.ac.in/"),
+        await axios.get("https://www.education.gov.in/higher_education"),
+        await axios.get("https://gujacpc.admissions.nic.in/home-8/be-b-tech/")
     ]);
 
     // Process NTA news
@@ -66,10 +67,10 @@ async function main() {
 
 }
 
-main().then(()=>{
+setInterval(()=>{main().then(()=>{
     console.log("Web crawler stopped");
     disconnect().then(r => {console.log("Db disconnected")} )
-});
+})},10000);
 
 
 
