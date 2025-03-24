@@ -1,18 +1,18 @@
-const axios=require("axios")
-const cheerio=require("cheerio");
-const {news} = require("./db");
-const mongoose = require("mongoose");
+import { get } from "axios";
+import { load } from "cheerio";
+import { news } from "./db";
+import { disconnect } from "mongoose";
 const allNews=[];
 async function findLatestNews() {
     // Start all axios requests simultaneously
     const [ntaResponse, dheResponse, acpcResponse] = await Promise.all([
-        axios.get("https://nta.ac.in/"),
-        axios.get("https://www.education.gov.in/higher_education"),
-        axios.get("https://gujacpc.admissions.nic.in/home-8/be-b-tech/")
+        get("https://nta.ac.in/"),
+        get("https://www.education.gov.in/higher_education"),
+        get("https://gujacpc.admissions.nic.in/home-8/be-b-tech/")
     ]);
 
     // Process NTA news
-    let $ = cheerio.load(ntaResponse.data);
+    let $ = load(ntaResponse.data);
     $('p').each((i, element) => {
         if ($(element).find("img").attr("src")) {
             let obj = {
@@ -25,7 +25,7 @@ async function findLatestNews() {
     });
 
     // Process DHE news
-    $ = cheerio.load(dheResponse.data);
+    $ = load(dheResponse.data);
     $('a.pdfIcon').each((i, element) => {
         const obj = {
             data: $(element).text().trim(),
@@ -36,7 +36,7 @@ async function findLatestNews() {
     });
 
     // Process ACPC news
-    $ = cheerio.load(acpcResponse.data);
+    $ = load(acpcResponse.data);
     $('a.with-urlchange').each((i, element) => {
         const obj = {
             data: $(element).text().trim(),
@@ -62,7 +62,7 @@ async function main() {
 
 main().then(()=>{
     console.log("Web crawler stopped");
-    mongoose.disconnect().then(r => {console.log("Db disconnected")} )
+    disconnect().then(r => {console.log("Db disconnected")} )
 });
 
 
