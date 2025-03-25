@@ -6,8 +6,9 @@ const changeStream=news.watch();
 changeStream.on("change",async (change)=>{
     if(change.operationType==='insert'){
         try{
-            await client.annoucments.create({
+            await client.announcments.create({
                 data:{
+                    id:change.fullDocument._id,
                     title:change.fullDocument.title,
                     link:change.fullDocument.link,
                     date:change.fullDocument.date,
@@ -20,11 +21,8 @@ changeStream.on("change",async (change)=>{
             },{isFresh:false})
         }
         catch (err){
-            console.log("failed to insert in postgres database");
+            console.log("failed to insert in postgres database or data is already stored in database");
         }
-    }
-    else if(change.operationType==="update"){
-        console.log(change)
     }
 
 })

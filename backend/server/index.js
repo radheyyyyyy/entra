@@ -1,12 +1,14 @@
 import express from "express";
 import { client } from "../prisma/db.js";
+import cors from "cors";
 const app = express();
 app.use(express.json())
+app.use(cors())
 app.get("/announcements", async (req, res) => {
     const page = parseInt(req.query.page);
     const length = parseInt(req.query.length) || 10;
-    const count = await client.annoucments.count();
-    const data = await client.annoucments.findMany();
+    const count = await client.announcments.count();
+    const data = await client.announcments.findMany();
     console.log(page);
     
     if (page !== 1) {

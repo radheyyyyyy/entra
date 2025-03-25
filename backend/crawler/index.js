@@ -1,4 +1,3 @@
-
 import { load } from "cheerio";
 import { news } from "../mongo/db.js";
 import { disconnect } from "mongoose";
@@ -9,7 +8,7 @@ async function findLatestNews() {
     const [ntaResponse, dheResponse, acpcResponse] = await Promise.all([
         await axios.get("https://nta.ac.in/"),
         await axios.get("https://www.education.gov.in/higher_education"),
-        await axios.get("https://gujacpc.admissions.nic.in/home-8/be-b-tech/")
+        await axios.get("https://acpc.gujarat.gov.in/")
     ]);
 
     // Process NTA news
@@ -38,13 +37,19 @@ async function findLatestNews() {
 
     // Process ACPC news
     $ = load(acpcResponse.data);
-    $('a.with-urlchange').each((i, element) => {
-        const obj = {
-            data: $(element).text().trim(),
-            link: $(element).attr("href").trim(),
-            source: "acpc"
-        };
-        allNews.push(obj);
+    $('.inner-grid-box').each((i, element) => {
+        if($(element).find("h3").text()===" Latest News") {
+            $(element).find(".home-page li a").each((i,ele)=>{
+                const obj = {
+                    data: $(ele).text().trim(),
+                    link: 'https://acpc.gujarat.gov.in' + $(ele).attr("href"),
+                    source: "acpc"
+                };
+                console.log(obj)
+                allNews.push(obj);
+            })
+
+        }
     });
 }
 
@@ -57,14 +62,23 @@ async function main() {
                 source:ele.source,
                 title:ele.data
             });
+        //if news failed to save in postgres=>res.isFresh is used
+        //if news is not present in mongo=>res[0] is used
         if(typeof (res[0])==="undefined"){
         await news.create({
             link:ele.link,
             source:ele.source,
             title:ele.data
-        })
-    }}
-
+        })}
+        else if(res.isFresh){
+            news.deleteOne({res})
+            await news.create({
+                link:ele.link,
+                source:ele.source,
+                title:ele.data
+            })
+            }
+    }
 }
 
 setInterval(()=>{main().then(()=>{
