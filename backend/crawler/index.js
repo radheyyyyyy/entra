@@ -66,10 +66,6 @@ async function main() {
 
 }
 
-main().then(()=>{
-    console.log("Web crawler stopped");
-    disconnect().then(r => {console.log("Db disconnected")} )
-});
 
 
 

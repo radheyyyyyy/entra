@@ -53,7 +53,7 @@ const AnnouncementsList = () => {
             index={index}
           />
         ))}
-        {!loading && <Pagination setPage={setPage} length={lengthRef.current}/>}
+        {!loading && <Pagination cardsPerPage={2}setPage={setPage} length={lengthRef.current}/>}
       </div>
       
     </motion.div>
@@ -84,9 +84,6 @@ const ListHeader = () => {
 }
 
 const Pagination = ({cardsPerPage=10,setPage,length}) => {
-  function handlePage(pageNumber){
-    setPage(pageNumber)
-  }
   return (
     <motion.div 
       className="flex items-center justify-center space-x-2 pt-4"
@@ -102,7 +99,9 @@ const Pagination = ({cardsPerPage=10,setPage,length}) => {
           }`}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          onClick={handlePage(page)}
+          onClick={(pageNumber)=>{
+            setPage(pageNumber)
+          }}
         >
           {page}
         </motion.button>
