@@ -5,7 +5,7 @@ import Footer from "../components/Footer.jsx"
 
 function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen w-full">
+    <div className="flex font-sans flex-col min-h-screen w-full">
       <Header />
       <main className="flex-1 w-full">
         {/* Hero Section */}
@@ -19,7 +19,7 @@ function LandingPage() {
                 transition={{ duration: 0.6 }}
               >
                 <motion.div 
-                  className="inline-block rounded-lg bg-orange-100 px-3 py-1 text-sm text-orange-800"
+                  className="inline-block rounded-lg bg-blue-100 px-3 py-1 text-sm text-blue-800"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.4 }}
@@ -51,7 +51,7 @@ function LandingPage() {
                 >
                   <Link
                     to="/announcements"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1"
+                    className="inline-flex h-10 items-center justify-center rounded-md bg-blue-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-1"
                   >
                     View Announcements
                   </Link>
@@ -108,7 +108,7 @@ function LandingPage() {
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   >
                     <motion.img
-                      src="https://www.jacpcldce.ac.in/images/acpc.png"
+                      src="data:image/jpeg;base64,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"
                       alt="ACPC Gujarat logo"
                       className="h-28 object-contain"
                       initial={{ opacity: 0 }}
@@ -131,7 +131,7 @@ function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
+        <section className="w-full py-12 md:py-24 lg:py-15">
           <div className="w-full max-w-full px-4 md:px-6">
             <motion.div 
               className="flex flex-col items-center justify-center space-y-4 text-center"
@@ -354,7 +354,7 @@ function LandingPage() {
                   >
                     <Link
                       to={`/announcements/${announcement.id}`}
-                      className="inline-flex items-center text-orange-600 hover:text-orange-700"
+                      className="inline-flex items-center text-blue-600 hover:text-blue-700"
                     >
                       Read more
                       <svg
@@ -395,7 +395,7 @@ function LandingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-orange-600 to-red-600 text-white">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-600 to-blue-900 text-white">
           <div className="w-full max-w-full px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <motion.div 
@@ -423,7 +423,7 @@ function LandingPage() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     to="/signup"
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-white text-orange-600 px-8 text-sm font-medium shadow transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-1"
+                    className="inline-flex h-10 items-center justify-center rounded-md bg-white text-blue-600 px-8 text-sm font-medium shadow transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-1"
                   >
                     Sign Up Now
                   </Link>

@@ -71,6 +71,11 @@ const FiltersSidebar = () => {
                   <input
                     id={`type-${type}`}
                     type="checkbox"
+                    onClick={()=>{
+                      if(document.getElementById(`type-${type}`).checked){
+
+                      }
+                    }}
                     className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-600"
                   />
                   <label htmlFor={`type-${type}`} className="text-sm text-gray-700">
@@ -128,7 +133,7 @@ const FiltersSidebar = () => {
 
           {/* Apply Filters Button */}
           <motion.button 
-            className="inline-flex items-center justify-center rounded-md bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full"
+            className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.8 }}

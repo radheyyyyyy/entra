@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 function Header() {
   return (
     <motion.header 
-      className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      className="font-sans sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -26,7 +26,7 @@ function Header() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-6 w-6 text-orange-600"
+              className="h-6 w-6 text-blue-600"
               animate={{ rotate: [0, 10, 0, -10, 0] }}
               transition={{ repeat: Infinity, repeatDelay: 5, duration: 1 }}
             >
@@ -50,7 +50,7 @@ function Header() {
               transition={{ delay: 0.1 * index, duration: 0.4 }}
               whileHover={{ y: -2 }}
             >
-              <Link to={link.to} className="text-sm font-medium hover:text-orange-600 transition-colors">
+              <Link to={link.to} className="text-sm font-medium hover:text-blue-600 transition-colors">
                 {link.label}
               </Link>
             </motion.div>
@@ -80,7 +80,7 @@ function Header() {
           >
             <Link
               to="/signup"
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-orange-600 text-white hover:bg-orange-700 h-9 px-4 py-2"
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-9 px-4 py-2"
             >
               Sign Up
             </Link>

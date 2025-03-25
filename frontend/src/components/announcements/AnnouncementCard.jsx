@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 
 // eslint-disable-next-line react/prop-types
 const AnnouncementCard = ({ announcement, index }) => {
+
   return (
     <motion.div 
       key={announcement.id} 
