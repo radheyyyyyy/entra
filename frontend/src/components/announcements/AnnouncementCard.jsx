@@ -45,7 +45,7 @@ const AnnouncementCard = ({ announcement, index }) => {
         <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
           <Link
             to={`${announcement.link}`}
-            className="inline-flex items-center text-orange-600 hover:text-orange-700"
+            className="inline-flex items-center text-blue-600 hover:text-blue-700"
             target="_blank"
           >
             Link

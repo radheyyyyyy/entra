@@ -45,7 +45,6 @@ async function findLatestNews() {
                     link: 'https://acpc.gujarat.gov.in' + $(ele).attr("href"),
                     source: "acpc"
                 };
-                console.log(obj)
                 allNews.push(obj);
             })
 
