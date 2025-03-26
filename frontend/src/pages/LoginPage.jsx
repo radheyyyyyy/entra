@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
+import Header from "../components/Header"
 
 function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col">
+      <Header/>
       <div className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -21,14 +23,14 @@ function LoginPage() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-6 w-6 text-orange-600"
+              className="h-6 w-6 text-blue-600"
               animate={{ rotate: [0, 10, 0, -10, 0] }}
               transition={{ repeat: Infinity, repeatDelay: 4, duration: 1 }}
             >
               <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
               <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
             </motion.svg>
-            <span className="text-xl font-bold">AdmissionPortal</span>
+            <span className="text-xl font-bold">Entra</span>
           </Link>
         </motion.div>
         <motion.div 
@@ -62,7 +64,7 @@ function LoginPage() {
               <input
                 id="email"
                 type="email"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 placeholder="m@example.com"
                 required
               />
@@ -80,23 +82,31 @@ function LoginPage() {
                 >
                   Password
                 </label>
-                <Link to="/forgot-password" className="text-sm text-orange-600 hover:text-orange-700">
+                <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">
                   Forgot password?
                 </Link>
               </div>
               <input
                 id="password"
                 type="password"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 required
               />
             </motion.div>
-            <motion.button
-              type="submit"
-              className="inline-flex w-full items-center justify-center rounded-md bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+            <motion.div 
+              className="flex items-center space-x-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.5 }}
+            >
+             
+            </motion.div>
+            <motion.button
+              type="submit"
+              className="inline-flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -107,11 +117,11 @@ function LoginPage() {
             className="mt-4 text-center text-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
+            transition={{ delay: 0.7, duration: 0.5 }}
           >
             Don&apos;t have an account?{" "}
-            <motion.span whileHover={{ color: "#c2410c" }}>
-              <Link to="/signup" className="text-orange-600 hover:text-orange-700 hover:underline">
+            <motion.span whileHover={{ color: "#1d4ed8" }}>
+              <Link to="/signup" className="text-blue-600 hover:text-blue-700 hover:underline">
                 Sign up
               </Link>
             </motion.span>

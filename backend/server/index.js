@@ -10,13 +10,11 @@ app.get("/announcements", async (req, res) => {
     const count = await client.announcments.count();
     const data = await client.announcments.findMany({
         take:limit,
-        skip:(page-1)*limit
-    });
-    console.log(limit);
-    
-    console.log(data.length);
-    
-    
+        skip:(page-1)*limit,
+        orderBy:{
+            date:"desc"
+        }
+    });    
     if (page !== 1) {
         res.json({
             msg: data,
