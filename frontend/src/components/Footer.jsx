@@ -26,14 +26,14 @@ function Footer() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-6 w-6 text-orange-600"
+              className="h-6 w-6 text-blue-600"
               animate={{ rotate: [0, 10, 0, -10, 0] }}
               transition={{ repeat: Infinity, repeatDelay: 5, duration: 1 }}
             >
               <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
               <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
             </motion.svg>
-            <span className="text-lg font-semibold">AdmissionPortal</span>
+            <span className="text-lg font-semibold">Entra</span>
           </motion.div>
         </Link>
         <motion.p 
@@ -42,7 +42,7 @@ function Footer() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.4 }}
         >
-          © {new Date().getFullYear()} AdmissionPortal. All rights reserved.
+          © {new Date().getFullYear()} Entra. All rights reserved.
         </motion.p>
         <div className="flex gap-4">
           {[

@@ -6,6 +6,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],       // Clean & modern
+        serif: ["Cormorant Garamond", "serif"],   // Academic & readable
+        mono: ["Source Code Pro", "monospace"],
+      },
       container: {
         center: true,
         padding: {

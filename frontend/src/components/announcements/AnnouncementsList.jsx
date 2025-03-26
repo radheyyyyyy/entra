@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion"
-import { announcements, sortOptions, paginationConfig } from "../../data/announcementsData"
+import {sortOptions, paginationConfig } from "../../data/announcementsData"
 import AnnouncementCard from "./AnnouncementCard"
 import { useEffect, useRef, useState } from "react"
 import axios from "axios"
@@ -42,30 +42,69 @@ const AnnouncementsList = () => {
     >
       <ListHeader />
       <div className="space-y-4">
-        {loading && <h4>Loading...</h4>}
-        {!loading && announcements.map((announcement, index) => (
-          <AnnouncementCard 
-            key={announcement.id}
-            announcement={announcement}
-            index={index}
-          />
-        ))}
-        {!loading && <Pagination cardsPerPage={3} setPage={setPage} length={lengthRef.current} pageno={page}/>}
+        {loading &&
+            <div>
+                <div role="status" className="mb-10 max-w-sm animate-pulse">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-400 w-48 mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[600px] mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[100px]"></div>
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div role="status" className="mb-10 max-w-sm animate-pulse">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-400 w-48 mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[600px] mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[100px]"></div>
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div role="status" className="mb-10 max-w-sm animate-pulse">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-400 w-48 mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[600px] mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[100px]"></div>
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div role="status" className="mb-10 max-w-sm animate-pulse">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-400 w-48 mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[400] mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[100px]"></div>
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div role="status" className="mb-10 max-w-sm animate-pulse">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-400 w-48 mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[600px] mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[100px]"></div>
+                    <span className="sr-only">Loading...</span>
+                </div>
+                <div role="status" className="mb-10 max-w-sm animate-pulse">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-400 w-48 mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[600px] mb-4"></div>
+                    <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-400 max-w-[100px]"></div>
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        }
+          {!loading && announcements.map((announcement, index) => (
+              <AnnouncementCard
+                  key={announcement.id}
+                  announcement={announcement}
+                  index={index}
+              />
+          ))}
+          {!loading && <Pagination cardsPerPage={3} setPage={setPage} length={lengthRef.current} pageno={page}/>}
       </div>
-      
+
     </motion.div>
   )
 }
 
 const ListHeader = () => {
-  return (
-    <motion.div 
-      className="flex items-center justify-between"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      <h2 className="text-2xl font-bold">Latest Announcements</h2>
+    return (
+        <motion.div
+            className="flex items-center justify-between"
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.4}}
+        >
+            <h2 className="text-2xl font-bold">Latest Announcements</h2>
       <div className="flex items-center gap-2">
         <span className="text-sm text-gray-500">Sort by:</span>
         <select className="flex h-9 rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
@@ -122,9 +161,13 @@ const Pagination = ({cardsPerPage=10, setPage, length, pageno}) => {
       {renderPageNumbers().map((page, index) => (
         <motion.button
           key={index}
-          className={`inline-flex h-9 ${page === 'prev' || page === 'next' ? 'px-3' : 'w-9'} items-center justify-center rounded-md ${
-            page === pageno ? "bg-orange-600 text-white" : "border border-input bg-background text-gray-700"
-          }`}
+          className={`inline-flex h-9 ${
+            page === 'prev' || page === 'next' ? 'px-3' : 'w-9'
+          } items-center justify-center rounded-md ${
+            page === pageno 
+              ? "bg-blue-600 text-white hover:bg-blue-700" 
+              : "border border-blue-200 bg-white text-blue-600 hover:bg-blue-50"
+          } transition-colors duration-200`}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => {
