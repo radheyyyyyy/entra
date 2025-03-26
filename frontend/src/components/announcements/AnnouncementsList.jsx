@@ -16,17 +16,14 @@ const AnnouncementsList = () => {
                 const {data} = await axios.get("http://localhost:3000/announcements",{
                     params:{
                         "page":page,
-                        "limit":10
+                        "limit":3
                     }
                 })                
                 if(page == 1 && lengthRef.current === null)
                 {
                     lengthRef.current = data.count 
                     console.log("inside condition"+lengthRef.current);
-
-                }
-                console.log(lengthRef.current);
-                
+                }                
                 setAnnouncements(data.msg)    
                 setLoading(false)                             
             } catch (error) {
@@ -92,7 +89,7 @@ const AnnouncementsList = () => {
                   index={index}
               />
           ))}
-          {!loading && <Pagination setPage={setPage} length={lengthRef.current}/>}
+          {!loading && <Pagination cardsPerPage={3} setPage={setPage} length={lengthRef.current} pageno={page}/>}
       </div>
 
     </motion.div>
@@ -122,10 +119,38 @@ const ListHeader = () => {
   )
 }
 
-const Pagination = ({cardsPerPage=10,setPage,length}) => {
-  function handlePage(pageNumber){
-    setPage(pageNumber)
-  }
+const Pagination = ({cardsPerPage=10, setPage, length, pageno}) => {
+  const totalPages = Math.ceil(length/cardsPerPage);
+  const [currentGroup, setCurrentGroup] = useState(Math.floor((pageno - 1) / 5));
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const startPage = currentGroup * 5 + 1;
+    const endPage = Math.min(startPage + 4, totalPages);
+
+    if (totalPages <= 5) {
+      // Show all pages if total pages are 5 or less
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Show navigation arrows and current group of pages
+      if (currentGroup > 0) {
+        pages.push('prev');
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      
+      if (endPage < totalPages) {
+        pages.push('next');
+      }
+    }
+    
+    return pages;
+  };
+
   return (
     <motion.div 
       className="flex items-center justify-center space-x-2 pt-4"
@@ -133,17 +158,31 @@ const Pagination = ({cardsPerPage=10,setPage,length}) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 1 }}
     >
-      {Array.from({ length: Math.ceil(length/cardsPerPage)  }, (_, i) => i + 1).map((page) => (
+      {renderPageNumbers().map((page, index) => (
         <motion.button
-          key={page}
-          className={`inline-flex h-9 w-9 items-center justify-center rounded-md ${
-            page === paginationConfig.currentPage ? "bg-orange-600 text-white" : "border border-input bg-background text-gray-700"
-          }`}
+          key={index}
+          className={`inline-flex h-9 ${
+            page === 'prev' || page === 'next' ? 'px-3' : 'w-9'
+          } items-center justify-center rounded-md ${
+            page === pageno 
+              ? "bg-blue-600 text-white hover:bg-blue-700" 
+              : "border border-blue-200 bg-white text-blue-600 hover:bg-blue-50"
+          } transition-colors duration-200`}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
-          onClick={handlePage(page)}
+          onClick={() => {
+            if (page === 'prev') {
+              setCurrentGroup(currentGroup - 1);
+              setPage(currentGroup * 5);
+            } else if (page === 'next') {
+              setCurrentGroup(currentGroup + 1);
+              setPage((currentGroup + 1) * 5 + 1);
+            } else {
+              setPage(page);
+            }
+          }}
         >
-          {page}
+          {page === 'prev' ? '←' : page === 'next' ? '→' : page}
         </motion.button>
       ))}
     </motion.div>

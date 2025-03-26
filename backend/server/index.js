@@ -6,10 +6,16 @@ app.use(express.json())
 app.use(cors())
 app.get("/announcements", async (req, res) => {
     const page = parseInt(req.query.page);
-    const length = parseInt(req.query.length) || 10;
+    const limit = parseInt(req.query.limit) || 10;
     const count = await client.announcments.count();
-    const data = await client.announcments.findMany();
-    console.log(page);
+    const data = await client.announcments.findMany({
+        take:limit,
+        skip:(page-1)*limit
+    });
+    console.log(limit);
+    
+    console.log(data.length);
+    
     
     if (page !== 1) {
         res.json({
