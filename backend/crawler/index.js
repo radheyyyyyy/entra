@@ -84,6 +84,6 @@ async function main() {
 
 setInterval(async () => {
     main().then(() => {
-        // console.log("Web crawler stopped");
+        console.log("Web crawler stopped");
     });
 }, 10000);
