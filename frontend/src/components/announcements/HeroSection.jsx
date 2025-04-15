@@ -3,7 +3,7 @@ import { heroContent } from "../../data/announcementsData"
 
 const HeroSection = () => {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-orange-50 to-white">
+    <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-blue-50 to-white">
       <div className="container px-4 md:px-6">
         <motion.div 
           className="space-y-4 text-center"

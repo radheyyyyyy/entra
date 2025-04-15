@@ -47,7 +47,7 @@ function ContactPage() {
       <Header />
       <main className="flex-1 w-full">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-orange-50 to-white">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-blue-50 to-white">
           <div className="w-full max-w-full px-4 md:px-6">
             <motion.div 
               className="mx-auto max-w-3xl text-center"
