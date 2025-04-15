@@ -1,0 +1,9 @@
+{
+	"id": "rHPTXJuKfTL0rYC",
+	"json": "{\"id\":\"rHPTXJuKfTL0rYC\",\"url\":\"https://jeemain.nta.nic.in/public-notices\",\"loadedUrl\":\"https://jeemain.nta.nic.in/public-notices/\",\"uniqueKey\":\"https://jeemain.nta.nic.in/public-notices\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-04-10T10:40:29.171Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://jeemain.nta.nic.in/public-notices",
+	"url": "https://jeemain.nta.nic.in/public-notices"
+}
