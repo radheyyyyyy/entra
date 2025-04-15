@@ -4,14 +4,35 @@ import axios from "axios";
 const allNews = [];
 async function findLatestNews() {
     // Start all axios requests simultaneously
-    const [ntaResponse, dheResponse, acpcResponse] = await Promise.all([
+    const [ntaResponse, dheResponse, acpcResponse,jeeNTAResponse,JEEadvResponse] = await Promise.all([
         await axios.get("https://nta.ac.in/"),
         await axios.get("https://www.education.gov.in/higher_education"),
         await axios.get("https://acpc.gujarat.gov.in/"),
+        (await axios.get("https://jeemain.nta.nic.in/")).data,
+        (await axios.get("https://jeeadv.ac.in/")).data
     ]);
+    let $=load(JEEadvResponse);
+    $('.announcement__text ').each((index,element)=>{
 
+        let obj={
+            data:$(element).find('h5').text().trim().replace('[Link]', ''),
+            link:"https://jeeadv.ac.in/",
+            source:"jeeadv"
+        }
+        console.log(obj)
+        allNews.push(obj);
+    })
+    $=load(jeeNTAResponse);
+    $('.gen-list:first ul li a').each((index,element)=>{
+       let obj={
+           data:$(element).text().trim(),
+           link:$(element).attr("href"),
+           source:"nta"
+       };
+       allNews.push(obj)
+    })
     // Process NTA news
-    let $ = load(ntaResponse.data);
+     $ = load(ntaResponse.data);
     $("p").each((i, element) => {
         if ($(element).find("img").attr("src")) {
             let obj = {
@@ -46,7 +67,6 @@ async function findLatestNews() {
                         link: "https://acpc.gujarat.gov.in" + $(ele).attr("href"),
                         source: "acpc",
                     };
-                    console.log(obj);
                     allNews.push(obj);
                 });
         }
@@ -57,14 +77,14 @@ async function main() {
     console.log("Web crawler started");
     await findLatestNews();
     for (const ele of allNews) {
-        const res = await news.find({
+        const res = await news.findOne({
             link: ele.link,
             source: ele.source,
             title: ele.data,
         });
         //if news failed to save in postgres=>res.isFresh is used
         //if news is not present in mongo=>res[0] is used
-        if (typeof res[0] === "undefined") {
+        if (res===null) {
             await news.create({
                 link: ele.link,
                 source: ele.source,
@@ -81,8 +101,7 @@ async function main() {
     }
 }
 
-setInterval(async () => {
+
     main().then(() => {
         console.log("Web crawler stopped");
     });
-}, 10000);

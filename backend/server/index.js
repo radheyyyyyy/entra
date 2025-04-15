@@ -1,10 +1,10 @@
-import express from "express";
+import express, {Router} from "express";
 import { client } from "../prisma/db.js";
 import cors from "cors";
-const app = express();
+export const app = Router();
 app.use(express.json())
 app.use(cors())
-app.get("/announcements", async (req, res) => {
+app.get("/", async (req, res) => {
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit) || 10;
     const count = await client.announcments.count();
@@ -31,4 +31,26 @@ app.get("/announcements", async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log("App is listening on PORT 3000"));
+app.post("/filters",async (req,res)=>{
+    const result=[];
+    const {filters}=req.body;
+    if(filters.length===0){
+
+    }
+    for (let word of filters){
+        const data=await client.announcments.findMany({
+            where:{
+                title:{
+                    contains:word,
+                    mode:"insensitive"
+                }
+
+            }
+        })
+        result.push(...data);
+    }
+    res.json({
+        data:result
+    })
+})
+

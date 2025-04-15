@@ -7,6 +7,7 @@ import AnnouncementsPage from "./pages/AnnouncementsPage.jsx"
 import AnnouncementDetailPage from "./pages/AnnouncementDetailPage.jsx"
 import ContactPage from "./pages/ContactPage.jsx"
 import './App.css';
+import AdmissionCalendar from "./components/AdmissionCalendar.jsx";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/announcements" element={<AnnouncementsPage />} />
       <Route path="/announcements/:id" element={<AnnouncementDetailPage />} />
-      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/contact" element={<AdmissionCalendar />} />
     </Routes>
     </Router>
   );
