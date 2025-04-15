@@ -1,9 +1,9 @@
 export const institutionTypes = [
-  "IITs",
-  "NITs", 
-  "IIMs",
-  "Medical Colleges",
-  "Universities"
+  "JEE Main",
+  "JEE Advance",
+  "NEET UG",
+  "CLAT UG",
+  "UPSC CSE(IAS,IPS)",
 ]
 
 export const courseLevels = [

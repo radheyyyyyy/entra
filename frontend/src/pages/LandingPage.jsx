@@ -9,7 +9,7 @@ function LandingPage() {
       <Header />
       <main className="flex-1 w-full">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-blue-50 to-white">
+        <section className="w-full py-12 md:py-24 lg:py-20 bg-gradient-to-b from-orange-50 to-white">
           <div className="w-full max-w-full px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <motion.div 
@@ -257,7 +257,7 @@ function LandingPage() {
         </section>
 
         {/* Latest Announcements Preview */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
+        <section className="w-full py-12 md:py-24 lg:py-24 bg-gray-50">
           <div className="w-full max-w-full px-4 md:px-6">
             <motion.div 
               className="flex flex-col items-center justify-center space-y-4 text-center"
@@ -395,7 +395,7 @@ function LandingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-600 to-blue-900 text-white">
+        <section className="w-full py-12 md:py-24 lg:py-24 bg-gradient-to-r from-blue-600 to-blue-900 text-white">
           <div className="w-full max-w-full px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <motion.div 

@@ -1,12 +1,11 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
+
 import { motion } from "framer-motion"
-import {sortOptions, paginationConfig } from "../../data/announcementsData"
+import {sortOptions,} from "../../data/announcementsData"
 import AnnouncementCard from "./AnnouncementCard"
 import { useEffect, useRef, useState } from "react"
 import axios from "axios"
-const AnnouncementsList = () => {
-  const [announcements,setAnnouncements] = useState([])
+const AnnouncementsList = ({announcements,setAnnouncements}) => {
+
   const [loading,setLoading] = useState(true)
   const [page,setPage] = useState(1)
   const lengthRef = useRef(null)

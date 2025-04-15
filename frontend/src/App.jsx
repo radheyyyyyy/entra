@@ -8,6 +8,7 @@ import ExamDetailsPage from "./pages/ExamDetailsPage.jsx"
 import ContactPage from "./pages/ContactPage.jsx"
 import Chatbot from './components/chatbot/Chatbot';
 import './App.css';
+import AdmissionCalendar from "./components/AdmissionCalendar.jsx";
 
 function App() {
   return (

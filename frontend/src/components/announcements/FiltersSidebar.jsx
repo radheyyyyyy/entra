@@ -1,7 +1,10 @@
 import { motion } from "framer-motion"
 import { institutionTypes, courseLevels, locations } from "../../data/announcementsData"
+import {useState} from "react";
+import axios from "axios";
 
-const FiltersSidebar = () => {
+const FiltersSidebar = ({setAnnouncements}) => {
+  const [filters,setFilters]=useState([]);
   return (
     <motion.div 
       className="w-full md:w-1/4 space-y-6"
@@ -58,7 +61,7 @@ const FiltersSidebar = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.5 }}
           >
-            <h4 className="font-medium mb-2">Institution Type</h4>
+            <h4 className="font-medium mb-2">Entrance Exams</h4>
             <div className="space-y-2">
               {institutionTypes.map((type, index) => (
                 <motion.div 
@@ -73,7 +76,7 @@ const FiltersSidebar = () => {
                     type="checkbox"
                     onClick={()=>{
                       if(document.getElementById(`type-${type}`).checked){
-
+                        setFilters([...filters,type.split(" ")[1]])
                       }
                     }}
                     className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-600"
@@ -139,6 +142,14 @@ const FiltersSidebar = () => {
             transition={{ duration: 0.3, delay: 0.8 }}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
+            onClick={async ()=>{
+              const res=(await axios.post("http://localhost:3000/announcements/filters", {
+                filters: filters
+              })).data;
+              console.log(res.data);
+              setAnnouncements(res.data);
+              setFilters([])
+            }}
           >
             <motion.svg
               xmlns="http://www.w3.org/2000/svg"

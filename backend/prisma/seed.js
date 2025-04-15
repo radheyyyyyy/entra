@@ -3,7 +3,7 @@ const prisma = new PrismaClient()
 
 async function main() {
   // Clear existing data
-  await prisma.annoucments.deleteMany({})
+  await prisma.announcments.deleteMany({})
 
   // Sample announcements data
   const announcements = [

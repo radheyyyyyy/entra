@@ -21,6 +21,7 @@ changeStream.on("change",async (change)=>{
             },{isFresh:false})
         }
         catch (err){
+            console.log(err)
             console.log("failed to insert in postgres database or data is already stored in database");
         }
     }

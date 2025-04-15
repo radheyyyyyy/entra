@@ -7,13 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// announcments
-// link,src,data(title),date
-
 model announcments {
   id     String   @id @unique
   link   String
   source String
-  title  String   @unique
+  title  String
   date   DateTime
+
+  @@unique([link, source, title])
 }
