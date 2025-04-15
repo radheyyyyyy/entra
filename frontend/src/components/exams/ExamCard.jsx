@@ -2,7 +2,7 @@
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 
-const ExamCard = ({ announcement, index }) => {
+const ExamCard = ({ exam, index }) => {
   return (
     <motion.div 
       className="rounded-lg border bg-card p-4 shadow-sm"
@@ -34,16 +34,16 @@ const ExamCard = ({ announcement, index }) => {
               <line x1="8" x2="8" y1="2" y2="6"></line>
               <line x1="3" x2="21" y1="10" y2="10"></line>
             </svg>
-            <span>{new Date(announcement.date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>{new Date(exam.date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </div>
           <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-            {announcement.exam}
+            {exam.source}
           </span>
         </div>
-        <h3 className="text-lg font-bold">{announcement.title}</h3>
-        {/* <p className="text-gray-600 text-sm">{announcement.description}</p> */}
+        <h3 className="text-lg font-bold">{exam.title}</h3>
+        {/* <p className="text-gray-600 text-sm">{exam.description}</p> */}
         <div className="flex justify-end">
-          <Link to={announcement.link}>
+          <Link to={exam.link}>
             <motion.button
               className="text-blue-600 text-sm font-medium hover:text-blue-800 flex items-center"
               whileHover={{ x: 5 }}

@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js",
+    "scrape-table": "node crawler/tableScraperNode.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "cheerio": "^1.0.0",
     "cors": "^2.8.5",
     "crawlee": "^3.13.2",
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "mongoose": "^8.12.1",
     "playwright": "^1.51.1",

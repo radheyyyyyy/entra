@@ -1,21 +1,25 @@
+/* eslint-disable no-unused-vars */
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-// Import new components
-import HeroSection from "../components/announcements/HeroSection";
-import AnnouncementsList from "../components/announcements/AnnouncementsList";
+// Import exam components
+import ExamHeroSection from "../components/exams/ExamHeroSection";
+import ExamsList from "../components/exams/ExamsList";
+import ExamFiltersSidebar from "../components/exams/ExamFiltersSidebar";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Pagination } from "../components/common/Pagination";
 import NavigationSidebar from "../components/common/NavigationSidebar";
+import { BACKEND_URL } from "../../config";
 
-function AnnouncementsPage() {
-    let [announcements, setAnnouncements] = useState([]);
+function ExamsPage() {
+    const [exams,setExams] = useState([])
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const lengthRef = useRef(null);
     const cardsPerPage = 8;
+    
     useEffect(() => {
-        async function getAnnouncements() {
+        async function getExamsAnnouncements() {
             try {
                 const { data } = await axios.get("http://localhost:3000/announcements", {
                     params: {
@@ -27,24 +31,24 @@ function AnnouncementsPage() {
                     lengthRef.current = data.count;
                     console.log("inside condition" + lengthRef.current);
                 }
-                setAnnouncements(data.msg);
+                setExams(data.msg);
                 setLoading(false);
             } catch (error) {
                 console.log(error.message);
             }
         }
-        getAnnouncements();
+        getExamsAnnouncements();
     }, [loading, page]);
 
     return (
         <div className="flex flex-col min-h-screen font-sans">
             <Header />
             <main className="flex-1">
-                <HeroSection />
+                <ExamHeroSection />
                 <section className="w-full py-8">
                     <div className="container px-4 md:px-6">
                         <div className="flex flex-col md:flex-row gap-6">
-                            <NavigationSidebar />
+                            <NavigationSidebar/>
                             <div className="w-full md:w-3/4 flex flex-col">
                                 {loading && (
                                     <div>
@@ -62,9 +66,9 @@ function AnnouncementsPage() {
                                 )}
                                 {!loading && (
                                     <>
-                                        <AnnouncementsList
-                                            announcements={announcements}
-                                        />
+                                        <div className="flex flex-col md:flex-row gap-6">
+                                            <ExamsList exams={exams} />
+                                        </div>
                                         <div className="mt-8 w-full md:w-3/4">
                                             <Pagination
                                                 cardsPerPage={cardsPerPage}
@@ -85,4 +89,4 @@ function AnnouncementsPage() {
     );
 }
 
-export default AnnouncementsPage;
+export default ExamsPage; 

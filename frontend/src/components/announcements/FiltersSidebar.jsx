@@ -3,7 +3,7 @@ import { institutionTypes, courseLevels, locations } from "../../data/announceme
 import {useState} from "react";
 import axios from "axios";
 
-const FiltersSidebar = ({setAnnouncements}) => {
+const FiltersSidebar = ({setAnnouncements,page,cardsPerPage}) => {
   const [filters,setFilters]=useState([]);
   return (
     <motion.div 
@@ -143,9 +143,14 @@ const FiltersSidebar = ({setAnnouncements}) => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={async ()=>{
-              const res=(await axios.post("http://localhost:3000/announcements/filters", {
-                filters: filters
-              })).data;
+              const res=(await axios.get("http://localhost:3000/announcements/", {
+                params:{
+                  filters:{...filters},
+                  limit:cardsPerPage,
+                  page:page
+
+                }
+              }));
               console.log(res.data);
               setAnnouncements(res.data);
               setFilters([])

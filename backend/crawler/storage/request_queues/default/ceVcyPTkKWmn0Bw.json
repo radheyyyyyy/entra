@@ -1,9 +1,0 @@
-{
-	"id": "ceVcyPTkKWmn0Bw",
-	"json": "{\"id\":\"ceVcyPTkKWmn0Bw\",\"url\":\"https://jeemain.nta.nic.in\",\"loadedUrl\":\"https://jeemain.nta.nic.in/\",\"uniqueKey\":\"https://jeemain.nta.nic.in\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2025-04-10T10:40:29.240Z\"}",
-	"method": "GET",
-	"orderNo": null,
-	"retryCount": 0,
-	"uniqueKey": "https://jeemain.nta.nic.in",
-	"url": "https://jeemain.nta.nic.in"
-}

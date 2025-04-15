@@ -46,45 +46,45 @@ import { examAnnouncement } from "../mongo/db.js";
 // // Add first URL to the queue and start the crawl.
 // await crawler.run(["https://www.nta.ac.in"]);
 
-async function jeeMainCrawler() {
-    const crawler = new PlaywrightCrawler({
-        async requestHandler({ request, page, log }) {
-            log.info(`Processing ${request.url}`);
+// async function jeeMainCrawler() {
+//     const crawler = new PlaywrightCrawler({
+//         async requestHandler({ request, page, log }) {
+//             log.info(`Processing ${request.url}`);
           
-            const jeeDocLinks = await page.$$eval('a[download][href*=".pdf"][rel="noopener noreferrer"]', (links) => {
-                return links.map((link) => ({
-                    title: link.textContent.trim(),
-                    link: link.href,
-                    category: "Undergraduate",
-                    examName: "JEE Mains",
-                }));
-            });
+//             const jeeDocLinks = await page.$$eval('a[download][href*=".pdf"][rel="noopener noreferrer"]', (links) => {
+//                 return links.map((link) => ({
+//                     title: link.textContent.trim(),
+//                     link: link.href,
+//                     category: "Undergraduate",
+//                     examName: "JEE Mains",
+//                 }));
+//             });
 
-            // Push each link as a separate entry, not the entire array
-            if (jeeDocLinks.length > 0) {
-                // log.info(`Found ${jeeDocLinks.length} JEE document links`);
-                for (const link of jeeDocLinks) {
-                    // log.info(`Saving link: ${link.url}`);
-                    link.src = request.url;
-                    // await Dataset.pushData(link);
-                }
-                await examAnnouncement.create(jeeDocLinks);
-                // Verify data was pushed by checking dataset count
-                // const { count } = await Dataset.getInfo();
-                // log.info(`Dataset now contains ${count} items`);
-            } else {
-                log.info("No matching JEE document links found on this page");
-            }
+//             // Push each link as a separate entry, not the entire array
+//             if (jeeDocLinks.length > 0) {
+//                 // log.info(`Found ${jeeDocLinks.length} JEE document links`);
+//                 for (const link of jeeDocLinks) {
+//                     // log.info(`Saving link: ${link.url}`);
+//                     link.src = request.url;
+//                     // await Dataset.pushData(link);
+//                 }
+//                 await examAnnouncement.create(jeeDocLinks);
+//                 // Verify data was pushed by checking dataset count
+//                 // const { count } = await Dataset.getInfo();
+//                 // log.info(`Dataset now contains ${count} items`);
+//             } else {
+//                 log.info("No matching JEE document links found on this page");
+//             }
 
-            // Export to CSV - make sure this is not commented out
-            // await Dataset.exportToJSON("outputjeemains");
-            // log.info("Dataset exported to CSV as 'outputjeemains'");
-        },
-        // Add additional options for better reliability
-    });
+//             // Export to CSV - make sure this is not commented out
+//             // await Dataset.exportToJSON("outputjeemains");
+//             // log.info("Dataset exported to CSV as 'outputjeemains'");
+//         },
+//         // Add additional options for better reliability
+//     });
 
-    // Pass the URL in an array
-    await crawler.run(["https://jeemain.nta.nic.in/public-notices", "https://jeemain.nta.nic.in"]);
-}
+//     // Pass the URL in an array
+//     await crawler.run(["https://jeemain.nta.nic.in/public-notices", "https://jeemain.nta.nic.in"]);
+// }
 
-await jeeMainCrawler();
+// await jeeMainCrawler();

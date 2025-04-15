@@ -17,7 +17,7 @@ async function findLatestNews() {
         let obj={
             data:$(element).find('h5').text().trim().replace('[Link]', ''),
             link:"https://jeeadv.ac.in/",
-            source:"jeeadv"
+            source:"jee-advanced"
         }
         console.log(obj)
         allNews.push(obj);
@@ -27,7 +27,7 @@ async function findLatestNews() {
        let obj={
            data:$(element).text().trim(),
            link:$(element).attr("href"),
-           source:"nta"
+           source:"jee-main"
        };
        allNews.push(obj)
     })
@@ -90,6 +90,7 @@ async function main() {
                 source: ele.source,
                 title: ele.data,
             });
+            
         } else if (res.isFresh) {
             news.deleteOne({ res });
             await news.create({
