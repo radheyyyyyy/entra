@@ -2,7 +2,7 @@ export const institutionTypes = [
   "JEE Main",
   "JEE Advance",
   "NEET UG",
-  "CLAT UG",
+  "GUJCET UG",
   "UPSC CSE(IAS,IPS)",
 ]
 

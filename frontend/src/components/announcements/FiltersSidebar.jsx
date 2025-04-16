@@ -3,6 +3,7 @@ import { institutionTypes, courseLevels, locations } from "../../data/announceme
 import {useState} from "react";
 import axios from "axios";
 
+// eslint-disable-next-line react/prop-types
 const FiltersSidebar = ({setAnnouncements}) => {
   const [filters,setFilters]=useState([]);
   return (
@@ -76,7 +77,12 @@ const FiltersSidebar = ({setAnnouncements}) => {
                     type="checkbox"
                     onClick={()=>{
                       if(document.getElementById(`type-${type}`).checked){
-                        setFilters([...filters,type.split(" ")[1]])
+                        if(type.split(" ")[1]==="UG" || type.split(" ")[1]===""){
+                          setFilters([...filters,type.split(" ")[0]])
+                        }
+                        else {
+                          setFilters([...filters,type.split(" ")[1]])
+                        }
                       }
                     }}
                     className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-600"
@@ -143,12 +149,14 @@ const FiltersSidebar = ({setAnnouncements}) => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={async ()=>{
+              console.log(filters)
               const res=(await axios.post("http://localhost:3000/announcements/filters", {
                 filters: filters
               })).data;
+              setFilters(()=>[])
               console.log(res.data);
               setAnnouncements(res.data);
-              setFilters([])
+
             }}
           >
             <motion.svg

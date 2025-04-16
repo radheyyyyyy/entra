@@ -36,16 +36,40 @@ app.post("/filters",async (req,res)=>{
 
     }
     for (let word of filters){
-        const data=await client.announcments.findMany({
-            where:{
-                title:{
-                    contains:word,
-                    mode:"insensitive"
+        let data;
+        if(word===("NEET")){
+            data=await client.announcments.findMany({
+                where:{
+                    AND:[
+                        {title:{
+                                contains:word,
+                                mode:"insensitive"
+                            }},
+                        {source:{
+                                contains:word,
+                                mode:"insensitive"
+                            }},],
                 }
-
             }
-        })
-        result.push(...data);
+            )
+            result.push(...data);
+        }
+        else {
+            data=await client.announcments.findMany({
+                where:{
+                    OR:[
+                        {title:{
+                                contains:word,
+                                mode:"insensitive"
+                            }},
+                        {source:{
+                                contains:word,
+                                mode:"insensitive"
+                            }},],
+                }
+            })
+            result.push(...data);
+        }
     }
     res.json({
         data:result
