@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { pageContext } from "../../pages/AdmissionsPage";
 export const FilterCheckBox = ({ onChange, label, value, index, filters, setFilters }) => {
     const [checked, setChecked] = useState(false);
+    const{page,setPage} = useContext(pageContext);
+
     useEffect(() => {
         if (checked) {
             // console.log("Filter when checked "+filters);
@@ -25,6 +28,7 @@ export const FilterCheckBox = ({ onChange, label, value, index, filters, setFilt
                 transition={{ duration: 0.2, delay: 0.7 + index * 0.05 }}>
                 <input
                     onChange={() => {
+                        setPage(1)
                         setChecked(!checked);
                     }}
                     id={`${label}`}

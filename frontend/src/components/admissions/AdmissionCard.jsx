@@ -6,7 +6,7 @@ const AdmissionCard = ({ admission, index }) => {
 
   return (
     <motion.div 
-      key={admission.id} 
+   
       className="rounded-lg border bg-card p-4 shadow-sm"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}

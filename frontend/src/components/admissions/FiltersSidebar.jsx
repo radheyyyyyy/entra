@@ -1,26 +1,12 @@
+/* eslint-disable react/prop-types */
 import { motion } from "framer-motion";
-import { institutionTypes, courseLevels, locations } from "../../data/announcementsData";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { FilterCheckBox } from "../common/FilterCheckBox";
-import { BACKEND_URL } from "../../../config";
 
-const FiltersSidebar = ({ setAdmissions, page, cardsPerPage }) => {
-    const [locationFilters, setLocationFilters] = useState([]);
-    useEffect(() => {
-        async function getFilteredLocationData() {
-            const {data} = await axios.get(`${BACKEND_URL}/admissions/filter-location`, {
-                params: {
-                    filters: [...locationFilters],
-                    limit: cardsPerPage,
-                    page: page,
-                },
-            });
-            console.log(data.msg);
-            setAdmissions((prev)=>[...prev,data.msg]);
-        }
-        getFilteredLocationData();
-    }, [locationFilters]);
+import { FilterCheckBox } from "../common/FilterCheckBox";
+import { locations } from "../../data/announcementsData";
+
+
+const FiltersSidebar = ({ filters, setFilters }) => {
+  
     return (
         <motion.div
             className="w-full md:w-1/4 space-y-6"
@@ -144,15 +130,15 @@ const FiltersSidebar = ({ setAdmissions, page, cardsPerPage }) => {
                                     value={location.value}
                                     index={index}
                                     onChange={() => {}}
-                                    filters={locationFilters}
-                                    setFilters={setLocationFilters}
+                                    filters={filters}
+                                    setFilters={setFilters}
                                 />
                             ))}
                         </div>
                     </motion.div>
 
                     {/* Apply Filters Button */}
-                    <motion.button
+                    {/* <motion.button
                         className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -176,7 +162,7 @@ const FiltersSidebar = ({ setAdmissions, page, cardsPerPage }) => {
                             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                         </motion.svg>
                         Apply Filters
-                    </motion.button>
+                    </motion.button> */}
                 </div>
             </motion.div>
         </motion.div>
