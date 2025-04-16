@@ -1,13 +1,12 @@
 /* eslint-disable react/prop-types */
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
-
 // eslint-disable-next-line react/prop-types
-const AnnouncementCard = ({ announcement, index }) => {
+const AdmissionCard = ({ admission, index }) => {
 
   return (
     <motion.div 
-      key={announcement.id} 
+      key={admission.id} 
       className="rounded-lg border bg-card p-4 shadow-sm"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
@@ -38,19 +37,19 @@ const AnnouncementCard = ({ announcement, index }) => {
               <line x1="3" x2="21" y1="10" y2="10"></line>
             </svg>
             
-            <span>{new Date(announcement.date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <span>{new Date(admission.date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           </div>
-          {announcement.source && (
+          {admission.source && (
             <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-              {announcement.source}
+              {admission.source}
             </span>
           )}
         </div>
-        <h3 className="text-lg font-bold">{announcement.title}</h3>
-        {/* <p className="text-gray-500">{announcement.description}</p> */}
+        <h3 className="text-lg font-bold">{admission.title}</h3>
+        {/* <p className="text-gray-500">{admission.description}</p> */}
         <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
           <Link
-            to={`${announcement.link}`}
+            to={`${admission.link}`}
             className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors duration-200"
           >
             Read more
@@ -75,4 +74,4 @@ const AnnouncementCard = ({ announcement, index }) => {
   )
 }
 
-export default AnnouncementCard 
+export default AdmissionCard 
