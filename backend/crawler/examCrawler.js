@@ -102,6 +102,7 @@ async function findLatestNews() {
                             data: $(ele).text().trim(),
                             link: "https://acpc.gujarat.gov.in" + $(ele).attr("href"),
                             source: "acpc",
+                            location:"gujarat"
                         };
                         allNews.push(obj);
                     });

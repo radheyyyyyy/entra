@@ -11,10 +11,21 @@ export async function findLatestAdmissionNews() {
         axios.get("https://cee.kerala.gov.in/cee/"),
         axios.get("https://eapcet.tgche.ac.in/"),
         axios.get("https://gujacpc.admissions.nic.in/"),
-        axios.get("https://viteee.vit.ac.in")
+        axios.get("https://viteee.vit.ac.in"),
+        axios.get("https://www.bitsadmission.com/"),
+        axios.get("https://snu.edu.in/admissions/")
 
     ]);
-    const [josaaResponse,cetcellResponse,karnatakaResponse,wbResponse,kerelaResponse,telanganaResponse,gujaratResponse,vitResponse]=responses;
+    const [josaaResponse
+        ,cetcellResponse
+        ,karnatakaResponse
+        ,wbResponse
+        ,kerelaResponse
+        ,telanganaResponse
+        ,gujaratResponse
+        ,vitResponse
+        ,pilaniResponse,
+        snuResponse]=responses;
     let $;
 
     //josaa news
@@ -128,7 +139,35 @@ export async function findLatestAdmissionNews() {
                 source:"vit",
                 category:"admission"
             }
-            console.log(obj)
+           allNews.push(obj)
+        })
+    }
+
+    //bits pilani news
+    if(pilaniResponse.status==='fulfilled'){
+        $=load(pilaniResponse.value.data);
+        $('button ').each((index,element)=>{
+            const obj={
+                data:$(element).text().split("\n").map(line => line.trim()).filter(line => line !== "").join(""),
+                link:$(element).find('a').attr('href'),
+                source:"BITsPilani",
+                category:"admission"
+            }
+            allNews.push(obj)
+        })
+    }
+
+    //shiv nadar university response
+    if(snuResponse.status==='fulfilled'){
+        $=load(snuResponse.value.data);
+        $('.swiper-slide').each((index,element)=>{
+            const obj={
+                data:$(element).find('h5').text(),
+                link:$(element).find('a').attr('href'),
+                source:"SNU",
+                category:"admission"
+            }
+            allNews.push(obj)
         })
     }
 
