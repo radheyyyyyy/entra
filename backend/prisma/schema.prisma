@@ -1,10 +1,11 @@
 generator client {
   provider = "prisma-client-js"
+  
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgres://postgres:Vkp8989@@localhost:5432/entra"
 }
 
 model announcments {

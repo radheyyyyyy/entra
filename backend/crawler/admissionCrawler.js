@@ -77,7 +77,7 @@ export async function findLatestAdmissionNews() {
                 data:$(element).text().replace("New","").trim(),
                 link:"https://wbjeeb.nic.in",
                 source:"wbjeeb",
-                location:"West_bengal",
+                location:"west_bengal",
                 category:"admission"
             }
             allNews.push(obj)

@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 // Import new components
 import HeroSection from "../components/admissions/HeroSection";
 import AdmissionsList from "../components/admissions/AdmissionList";
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Pagination } from "../components/common/Pagination";
 import FiltersSidebar from "../components/admissions/FiltersSidebar";
@@ -13,37 +13,42 @@ function AdmissionsPage() {
     let [admissions, setAdmissions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const lengthRef = useRef(null);
+    const [length, setLength] = useState(null);
     const cardsPerPage = 8;
-    const [locationFilters, setLocationFilters] = useState([]);
+    const [locationFilters, setLocationFilters] = useState(null);
     useEffect(() => {
         async function getFilteredLocationData() {
             console.log(page);
-            
-            const { data } = await axios.get(`${BACKEND_URL}/admissions`, {
+
+            const { data } = await axios.get(`${BACKEND_URL}/admission/filters`, {
                 params: {
-                    filters: [...locationFilters],
+                    filters: { location: locationFilters },
                     limit: cardsPerPage,
                     page: page,
                 },
             });
+            setLoading(false);
             // console.log(data.msg);
+            if (page == 1) {
+                setLength(data.count);
+            }
             setAdmissions(data.msg);
         }
-        getFilteredLocationData();
-    }, [locationFilters, page]);
+        if (locationFilters!=null) {
+            getFilteredLocationData();
+        }
+    }, [locationFilters, page, loading]);
     useEffect(() => {
         async function getAnnouncements() {
             try {
-                const { data } = await axios.get(`${BACKEND_URL}/admissions`, {
+                const { data } = await axios.get(`${BACKEND_URL}/admission`, {
                     params: {
                         page: page,
                         limit: cardsPerPage,
                     },
                 });
-                if (page == 1 && lengthRef.current === null) {
-                    lengthRef.current = data.count;
-                    console.log("inside condition" + lengthRef.current);
+                if (page == 1) {
+                    setLength(data.count);
                 }
                 setAdmissions(data.msg);
                 setLoading(false);
@@ -51,9 +56,10 @@ function AdmissionsPage() {
                 console.log(error.message);
             }
         }
-        getAnnouncements();
-    }, [loading, page]);
-    console.log(admissions)
+        if (locationFilters === null) {
+            getAnnouncements();
+        }
+    }, [loading, page, locationFilters, length]);
     return (
         <pageContext.Provider value={{ page, setPage }}>
             <div className="flex flex-col min-h-screen font-sans">
@@ -63,7 +69,7 @@ function AdmissionsPage() {
                     <section className="w-full py-8">
                         <div className="container px-4 md:px-6">
                             <div className="flex flex-col md:flex-row gap-6">
-                                <FiltersSidebar filters={locationFilters} setFilters={setLocationFilters}/>
+                                <FiltersSidebar filters={locationFilters} setFilters={setLocationFilters} />
                                 <div className="w-full md:w-3/4 flex flex-col">
                                     {loading && (
                                         <div>
@@ -89,7 +95,7 @@ function AdmissionsPage() {
                                                 <Pagination
                                                     cardsPerPage={cardsPerPage}
                                                     setPage={setPage}
-                                                    length={lengthRef.current}
+                                                    length={length}
                                                     pageno={page}
                                                 />
                                             </div>

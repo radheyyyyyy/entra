@@ -7,10 +7,14 @@ admissionRouter.use(cors());
 admissionRouter.get("/", async (req, res) => {
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit) || 10;
-    const count = await client.announcments.count();
+    const count = await client.announcments.count({
+        where: {
+            type: "admission",
+        },
+    });
     const data = await client.announcments.findMany({
-        where:{
-            type:"admission"
+        where: {
+            type: "admission",
         },
         take: limit,
         skip: ((page - 1) * limit) | 0,
@@ -30,41 +34,84 @@ admissionRouter.get("/", async (req, res) => {
     }
 });
 
-admissionRouter.post("/filters", async (req, res) => {
-    let { filter } = req.body;
-    console.log(filter);
-    let result=[];
-    if(filter)
-    {
-        for(let word of filter){
-            console.log(word)
-        const data =  await client.announcments.findMany({
-            take:8,
-            where:{
-                location:{
-                    contains:word,
-                    mode:"insensitive"
-                }
+admissionRouter.get("/filters", async (req, res) => {
+    let { filters } = req.query;
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit) || 10;
+    console.log(filters);
+    const {location} = filters;
+    console.log(location);
+    
+    let result = [];
+    if (location) {
+        const data = await client.announcments.findMany({
+            take: limit,
+            skip: (page - 1) * limit,
+            where: {
+                type: "admission",
+                location: {
+                    contains: location,
+                    mode: "insensitive",
+                },
             },
             orderBy: {
                 date: "desc",
-            },select:{
-                title:true,
-                link:true,
-                source:true,
-                date:true
-            }
-        })
-        result.push(data)
-    }
+            },
+            select: {
+                title: true,
+                link: true,
+                source: true,
+                date: true,
+            },
+        });
+        result.push(...data);
 
-        res.json({
-            data: result,
-        });
+        if (page == 1) {
+            let count = 0;
+            count = await client.announcments.count({
+                where: {
+                    type: "admission",
+                    location: {
+                        contains:location,
+                        mode: "insensitive",
+                    },
+                },
+            });
+            res.json({
+                count,
+                msg: result,
+            });
+        } else {
+            res.json({
+                msg: result,
+            });
+        }
     } else {
-        res.json({
-            msg: "Something went wrong",
+        const data = await client.announcments.findMany({
+            where: {
+                type: "admission",
+            },
+            take: limit,
+            skip: ((page - 1) * limit) | 0,
+            orderBy: {
+                date: "desc",
+            },
         });
+        if (page !== 1) {
+            res.json({
+                msg: data,
+            });
+        } else {
+            const count = await client.announcments.count({
+                where: {
+                    type: "admission",
+                },
+            });
+            res.json({
+                msg: data,
+                count,
+            });
+        }
     }
     // if (filters.length === 0) {
     // }

@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 
 import { FilterCheckBox } from "../common/FilterCheckBox";
 import { locations } from "../../data/announcementsData";
+import { pageContext } from "../../pages/AdmissionsPage";
+import { useContext } from "react";
 
 
 const FiltersSidebar = ({ filters, setFilters }) => {
-  
+  const{setPage} = useContext(pageContext);
     return (
         <motion.div
             className="w-full md:w-1/4 space-y-6"
@@ -116,24 +118,48 @@ const FiltersSidebar = ({ filters, setFilters }) => {
             </div>
           </motion.div> */}
 
-                    {/* Location */}
+                    {/* Location - Dropdown */}
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: 0.7 }}>
                         <h4 className="font-medium mb-2">Location</h4>
-                        <div className="space-y-2">
-                            {locations.map((location, index) => (
-                                <FilterCheckBox
-                                    key={`location-${location.value}`}
-                                    label={location.label}
-                                    value={location.value}
-                                    index={index}
-                                    onChange={() => {}}
-                                    filters={filters}
-                                    setFilters={setFilters}
-                                />
-                            ))}
+                        <div className="relative">
+                            <div className="relative">
+                                <select 
+                                    className="flex h-10 w-full rounded-md border border-blue-300 bg-white px-3 py-2 text-sm appearance-none cursor-pointer shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition-colors duration-200"
+                                    onChange={(e) => {
+                                        setPage(1)
+                                        if (e.target.value === "") {
+                                            setFilters(null);
+                                        } else {
+                                            setFilters(e.target.value);
+                                        }
+                                    }}
+                                    value={filters || ""}
+                                >
+                                    <option value="">All Locations</option>
+                                    {locations.map((location) => (
+                                        <option key={location.value} value={location.value}>
+                                            {location.label}
+                                        </option>
+                                    ))}
+                                </select>
+                                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                    <svg 
+                                        className="w-4 h-4 text-blue-500" 
+                                        xmlns="http://www.w3.org/2000/svg" 
+                                        viewBox="0 0 20 20" 
+                                        fill="currentColor"
+                                    >
+                                        <path 
+                                            fillRule="evenodd" 
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" 
+                                            clipRule="evenodd" 
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
 
