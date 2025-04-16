@@ -1,26 +1,13 @@
 import { motion } from "framer-motion";
-import { institutionTypes, courseLevels, locations } from "../../data/announcementsData";
-import { useEffect, useState } from "react";
+import { locations } from "../../data/announcementsData";
+import { useState } from "react";
 import axios from "axios";
 import { FilterCheckBox } from "../common/FilterCheckBox";
 import { BACKEND_URL } from "../../../config";
 
-const FiltersSidebar = ({ setAdmissions, page, cardsPerPage }) => {
+// eslint-disable-next-line react/prop-types
+const FiltersSidebar = ({ setAdmissions}) => {
     const [locationFilters, setLocationFilters] = useState([]);
-    useEffect(() => {
-        async function getFilteredLocationData() {
-            const {data} = await axios.get(`${BACKEND_URL}/admissions/filter-location`, {
-                params: {
-                    filters: [...locationFilters],
-                    limit: cardsPerPage,
-                    page: page,
-                },
-            });
-            console.log(data.msg);
-            setAdmissions((prev)=>[...prev,data.msg]);
-        }
-        getFilteredLocationData();
-    }, [locationFilters]);
     return (
         <motion.div
             className="w-full md:w-1/4 space-y-6"
@@ -143,7 +130,6 @@ const FiltersSidebar = ({ setAdmissions, page, cardsPerPage }) => {
                                     label={location.label}
                                     value={location.value}
                                     index={index}
-                                    onChange={() => {}}
                                     filters={locationFilters}
                                     setFilters={setLocationFilters}
                                 />
@@ -159,7 +145,13 @@ const FiltersSidebar = ({ setAdmissions, page, cardsPerPage }) => {
                         transition={{ duration: 0.3, delay: 0.8 }}
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
-                        onClick={async () => {}}>
+                        onClick={async () => {
+                            console.log(locationFilters)
+                            const {data}=await axios.post(`${BACKEND_URL}/admission/filters`,{
+                                filter:locationFilters
+                            });
+                            setAdmissions(...data.data)
+                        }}>
                         <motion.svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"

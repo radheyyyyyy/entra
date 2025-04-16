@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-export const FilterCheckBox = ({ onChange, label, value, index, filters, setFilters }) => {
+export const FilterCheckBox = ({ label, value, index, filters, setFilters }) => {
     const [checked, setChecked] = useState(false);
     useEffect(() => {
         if (checked) {

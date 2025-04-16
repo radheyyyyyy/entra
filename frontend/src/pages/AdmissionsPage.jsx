@@ -6,7 +6,6 @@ import AdmissionsList from "../components/admissions/AdmissionList";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Pagination } from "../components/common/Pagination";
-import NavigationSidebar from "../components/common/NavigationSidebar";
 import FiltersSidebar from "../components/admissions/FiltersSidebar";
 
 function AdmissionsPage() {
@@ -18,7 +17,7 @@ function AdmissionsPage() {
     useEffect(() => {
         async function getAnnouncements() {
             try {
-                const { data } = await axios.get("http://localhost:3000/admissions", {
+                const { data } = await axios.get("http://localhost:3000/admission", {
                     params: {
                         page: page,
                         limit: cardsPerPage,
@@ -36,7 +35,7 @@ function AdmissionsPage() {
         }
         getAnnouncements();
     }, [loading, page]);
-
+    console.log(admissions)
     return (
         <div className="flex flex-col min-h-screen font-sans">
             <Header />
@@ -45,7 +44,7 @@ function AdmissionsPage() {
                 <section className="w-full py-8">
                     <div className="container px-4 md:px-6">
                         <div className="flex flex-col md:flex-row gap-6">
-                            <FiltersSidebar/>
+                            <FiltersSidebar setAdmissions={setAdmissions}/>
                             <div className="w-full md:w-3/4 flex flex-col">
                                 {loading && (
                                     <div>

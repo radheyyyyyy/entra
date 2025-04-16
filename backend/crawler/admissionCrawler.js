@@ -62,7 +62,7 @@ export async function findLatestAdmissionNews() {
         $('.card-body td').each((index,element)=>{
             const obj={
                 data:$(element).find('a').text().trim(),
-                link:$(element).find('a').attr('href'),
+                link:$(element).find('a').attr('href')?$(element).find('a').attr('href'):"https://cetonline.karnataka.gov.in/kea/",
                 source:"cetonline.karnataka.gov.in",
                 category:"admission",
                 location:"karnataka"

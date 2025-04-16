@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
-// eslint-disable-next-line react/prop-types
 const AdmissionCard = ({ admission, index }) => {
-
+  console.log(admission)
   return (
     <motion.div 
       key={admission.id} 
