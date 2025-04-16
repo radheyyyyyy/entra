@@ -1,15 +1,16 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 // Import new components
-import HeroSection from "../components/announcements/HeroSection";
-import AnnouncementsList from "../components/announcements/AnnouncementsList";
+import HeroSection from "../components/admissions/HeroSection";
+import AdmissionsList from "../components/admissions/AdmissionList";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Pagination } from "../components/common/Pagination";
 import NavigationSidebar from "../components/common/NavigationSidebar";
+import FiltersSidebar from "../components/admissions/FiltersSidebar";
 
-function AnnouncementsPage() {
-    let [announcements, setAnnouncements] = useState([]);
+function AdmissionsPage() {
+    let [admissions, setAdmissions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const lengthRef = useRef(null);
@@ -17,7 +18,7 @@ function AnnouncementsPage() {
     useEffect(() => {
         async function getAnnouncements() {
             try {
-                const { data } = await axios.get("http://localhost:3000/announcements", {
+                const { data } = await axios.get("http://localhost:3000/admissions", {
                     params: {
                         page: page,
                         limit: cardsPerPage,
@@ -27,7 +28,7 @@ function AnnouncementsPage() {
                     lengthRef.current = data.count;
                     console.log("inside condition" + lengthRef.current);
                 }
-                setAnnouncements(data.msg);
+                setAdmissions(data.msg);
                 setLoading(false);
             } catch (error) {
                 console.log(error.message);
@@ -44,7 +45,7 @@ function AnnouncementsPage() {
                 <section className="w-full py-8">
                     <div className="container px-4 md:px-6">
                         <div className="flex flex-col md:flex-row gap-6">
-                            <NavigationSidebar />
+                            <FiltersSidebar/>
                             <div className="w-full md:w-3/4 flex flex-col">
                                 {loading && (
                                     <div>
@@ -62,8 +63,8 @@ function AnnouncementsPage() {
                                 )}
                                 {!loading && (
                                     <>
-                                        <AnnouncementsList
-                                            announcements={announcements}
+                                        <AdmissionsList
+                                            admissions={admissions}
                                         />
                                         <div className="mt-8 w-full md:w-3/4">
                                             <Pagination
@@ -85,4 +86,4 @@ function AnnouncementsPage() {
     );
 }
 
-export default AnnouncementsPage;
+export default AdmissionsPage;

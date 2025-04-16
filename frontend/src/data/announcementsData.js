@@ -12,8 +12,13 @@ export const courseLevels = [
 ]
 
 export const locations = [
-  { value: "", label: "All Locations" },
-  { value: "gujarat", label: "Gujarat" }
+  { value: "gujarat", label: "Gujarat" },
+  { value: "maharashtra", label: "Maharashtra" },
+  { value: "karnataka", label: "Karnataka" },
+  { value: "kerala", label: "Kerala" },
+  { value: "west_bengal", label: "West Bengal" },
+  { value: "andhra_pradesh", label: "Andhra Pradesh" },
+  { value: "telangana", label: "Telangana" }
 ]
 
 export const sortOptions = [

@@ -5,14 +5,12 @@ export const app = Router();
 app.use(express.json());
 app.use(cors());
 app.get("/", async (req, res) => {
-
-    
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit) || 10;
     const count = await client.announcments.count();
     const data = await client.announcments.findMany({
         take: limit,
-        skip: (page - 1) * limit|0,
+        skip: ((page - 1) * limit) | 0,
         orderBy: {
             date: "desc",
         },
@@ -33,29 +31,26 @@ app.get("/filters", async (req, res) => {
     const result = [];
     const { filter } = req.query;
     console.log(filter);
-    
-    if(filter)
-    {
-        const data =  await client.announcments.findMany({
-            take:8,
-            where:{
-                source:{
-                    contains:filter 
-                }
+
+    if (filter) {
+        const data = await client.announcments.findMany({
+            take: 8,
+            where: {
+                source: {
+                    contains: filter,
+                },
             },
             orderBy: {
                 date: "desc",
-            }
-        })
+            },
+        });
         res.json({
             data: data,
         });
-    }
-    else
-    {
+    } else {
         res.json({
-            msg:"Something went wrong"
-        })
+            msg: "Something went wrong",
+        });
     }
     // if (filters.length === 0) {
     // }
@@ -70,7 +65,10 @@ app.get("/filters", async (req, res) => {
     //     });
     //     result.push(...data);
     // }
-
-   
 });
 
+app.get("/filter-location", (req, res) => {
+    const { filters } = req.query;
+    console.log(filters);
+    res.json({ msg: filters });
+});
