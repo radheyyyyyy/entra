@@ -1,7 +1,8 @@
 import { load } from "cheerio";
 import { news } from "../mongo/db.js";
 import axios from "axios";
-const allNews = [];
+import {findLatestAdmissionNews} from "./admissionCrawler.js";
+export const allNews = [];
 async function findLatestNews() {
     // Start all axios requests simultaneously
     const responses = await Promise.allSettled([
@@ -112,6 +113,7 @@ async function findLatestNews() {
 async function main() {
     console.log("Web crawler started");
     await findLatestNews();
+    await findLatestAdmissionNews();
     await Promise.all(allNews.map(async (ele) => {
         const res = await news.findOne({ link: ele.link, source: ele.source, title: ele.data });
         if (!res || res.isFresh) {
@@ -120,6 +122,8 @@ async function main() {
                 link: ele.link,
                 source: ele.source,
                 title: ele.data,
+                category: ele.category,
+                location:ele.location
             });
         }
     }));

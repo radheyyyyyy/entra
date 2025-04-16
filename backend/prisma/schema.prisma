@@ -8,11 +8,13 @@ datasource db {
 }
 
 model announcments {
-  id     String   @id @unique
-  link   String
-  source String
-  title  String
-  date   DateTime
+  id       String   @id @unique
+  link     String
+  source   String
+  title    String
+  date     DateTime
+  type     String
+  location String
 
   @@unique([link, source, title])
 }
