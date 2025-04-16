@@ -1,0 +1,26 @@
+{
+  "usableSessionsCount": 1,
+  "retiredSessionsCount": 0,
+  "sessions": [
+    {
+      "id": "session_fnZ5kL33CJ",
+      "cookieJar": {
+        "version": "tough-cookie@5.1.2",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "enableLooseMode": false,
+        "allowSpecialUseDomain": true,
+        "prefixSecurity": "silent",
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2025-04-15T17:19:22.381Z",
+      "createdAt": "2025-04-15T16:29:22.381Z",
+      "usageCount": 1,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    }
+  ]
+}

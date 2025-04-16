@@ -1,78 +1,76 @@
-import express, {Router} from "express";
+import express, { Router } from "express";
 import { client } from "../prisma/db.js";
 import cors from "cors";
 export const app = Router();
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 app.get("/", async (req, res) => {
+
+    
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit) || 10;
     const count = await client.announcments.count();
     const data = await client.announcments.findMany({
-        take:limit,
-        skip:(page-1)*limit,
-        orderBy:{
-            date:"desc"
-        }
-    });    
+        take: limit,
+        skip: (page - 1) * limit|0,
+        orderBy: {
+            date: "desc",
+        },
+    });
     if (page !== 1) {
         res.json({
             msg: data,
+        });
+    } else {
+        res.json({
+            msg: data,
+            count,
+        });
+    }
+});
+
+app.get("/filters", async (req, res) => {
+    const result = [];
+    const { filter } = req.query;
+    console.log(filter);
+    
+    if(filter)
+    {
+        const data =  await client.announcments.findMany({
+            take:8,
+            where:{
+                source:{
+                    contains:filter 
+                }
+            },
+            orderBy: {
+                date: "desc",
+            }
+        })
+        res.json({
+            data: data,
         });
     }
     else
     {
         res.json({
-            msg:data,
-            count
+            msg:"Something went wrong"
         })
     }
+    // if (filters.length === 0) {
+    // }
+    // for (let word of filters) {
+    //     const data = await client.announcments.findMany({
+    //         where: {
+    //             title: {
+    //                 contains: word,
+    //                 mode: "insensitive",
+    //             },
+    //         },
+    //     });
+    //     result.push(...data);
+    // }
+
+   
 });
-
-app.post("/filters",async (req,res)=>{
-    const result=[];
-    const {filters}=req.body;
-    if(filters.length===0){
-
-    }
-    for (let word of filters){
-        let data;
-        if(word===("NEET")){
-            data=await client.announcments.findMany({
-                where:{
-                    AND:[
-                        {title:{
-                                contains:word,
-                                mode:"insensitive"
-                            }},
-                        {source:{
-                                contains:word,
-                                mode:"insensitive"
-                            }},],
-                }
-            }
-            )
-            result.push(...data);
-        }
-        else {
-            data=await client.announcments.findMany({
-                where:{
-                    OR:[
-                        {title:{
-                                contains:word,
-                                mode:"insensitive"
-                            }},
-                        {source:{
-                                contains:word,
-                                mode:"insensitive"
-                            }},],
-                }
-            })
-            result.push(...data);
-        }
-    }
-    res.json({
-        data:result
-    })
-})
 
