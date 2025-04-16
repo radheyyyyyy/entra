@@ -12,7 +12,7 @@ changeStream.on("change",async (change)=>{
                     title:change.fullDocument.title,
                     link:change.fullDocument.link,
                     date:change.fullDocument.date,
-                    type:change.fullDocument.type,
+                    type:change.fullDocument.category,
                     source:change.fullDocument.source
                 }
             })

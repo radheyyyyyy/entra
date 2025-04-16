@@ -28,22 +28,29 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/filters", async (req, res) => {
-    const result = [];
-    const { filter } = req.query;
-    console.log(filter);
-
-    if (filter) {
-        const data = await client.announcments.findMany({
-            take: 8,
-            where: {
-                source: {
-                    contains: filter,
-                },
+    let { filter } = req.query;
+    filter=filter.split("-")[1];
+    console.log(filter)
+    if(filter)
+    {
+        const data =  await client.announcments.findMany({
+            take:8,
+            where:{
+                title:{
+                    contains:filter ,
+                    mode:"insensitive"
+                }
             },
             orderBy: {
                 date: "desc",
-            },
-        });
+            },select:{
+                title:true,
+                link:true,
+                source:true,
+                date:true
+            }
+        })
+        console.log(data)
         res.json({
             data: data,
         });

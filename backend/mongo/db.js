@@ -17,30 +17,15 @@ const schema = mongoose.Schema({
         type: Boolean,
         default: true,
     },
+    category:{
+        type: String,
+        default:"exam"
+    },
+    location:{
+        type: String,
+        default:"India"
+    }
 });
 
-const examAnnouncementSchema = new Schema({
-    link: {
-        type: String,
-    },
-    title: {
-        type: String,
-        required: true,
-    },
-    src: {
-        type: String,
-        required: true,
-    },
-    timestamp: {
-        type: Date,
-        default: Date.now,
-    },
-    category: {
-        type: String,
-    },
-    examName: {
-        type: String,
-    },
-});
+
 export const news = mongoose.model("news", schema);
-export const examAnnouncement = model("examannouncment", examAnnouncementSchema);
