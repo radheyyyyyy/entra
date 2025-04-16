@@ -1,4 +1,4 @@
-// server.js
+// Routes.js
 import express from 'express';
 import cors from "cors";
 const app = express();

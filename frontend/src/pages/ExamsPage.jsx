@@ -21,7 +21,7 @@ function ExamsPage() {
     useEffect(() => {
         async function getExamsAnnouncements() {
             try {
-                const { data } = await axios.get("http://localhost:3000/admissions", {
+                const { data } = await axios.get("http://localhost:3000/announcements", {
                     params: {
                         page: page,
                         limit: cardsPerPage,

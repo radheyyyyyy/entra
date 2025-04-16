@@ -13,7 +13,8 @@ changeStream.on("change",async (change)=>{
                     link:change.fullDocument.link,
                     date:change.fullDocument.date,
                     type:change.fullDocument.category,
-                    source:change.fullDocument.source
+                    source:change.fullDocument.source,
+                    location:change.fullDocument.location
                 }
             })
             await news.updateOne({

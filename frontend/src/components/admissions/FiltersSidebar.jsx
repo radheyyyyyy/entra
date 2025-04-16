@@ -145,7 +145,13 @@ const FiltersSidebar = ({ filters, setFilters }) => {
                         transition={{ duration: 0.3, delay: 0.8 }}
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
-                        onClick={async () => {}}>
+                        onClick={async () => {
+                            console.log(locationFilters)
+                            const {data}=await axios.post(`${BACKEND_URL}/admission/filters`,{
+                                filter:locationFilters
+                            });
+                            setAdmissions(...data.data)
+                        }}>
                         <motion.svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"

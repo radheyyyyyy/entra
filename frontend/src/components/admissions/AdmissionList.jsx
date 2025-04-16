@@ -12,8 +12,8 @@ const AdmissionList = ({ admissions }) => {
             transition={{ duration: 0.6, delay: 0.2 }}>
             <ListHeader />
             <div className="space-y-4">
-                {admissions.map((admission, index) => (
-                    <AdmissionCard key={admission.id} admission={admission} index={index} />
+                {admissions.map((ele, index) => (
+                    <AdmissionCard key={ele.id} admission={ele} index={index} />
                 ))}
             </div>
         </motion.div>

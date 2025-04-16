@@ -1,14 +1,17 @@
 import express, { Router } from "express";
 import { client } from "../prisma/db.js";
 import cors from "cors";
-export const app = Router();
-app.use(express.json());
-app.use(cors());
-app.get("/", async (req, res) => {
+export const admissionRouter = Router();
+admissionRouter.use(express.json());
+admissionRouter.use(cors());
+admissionRouter.get("/", async (req, res) => {
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit) || 10;
     const count = await client.announcments.count();
     const data = await client.announcments.findMany({
+        where:{
+            type:"admission"
+        },
         take: limit,
         skip: ((page - 1) * limit) | 0,
         orderBy: {
@@ -27,17 +30,19 @@ app.get("/", async (req, res) => {
     }
 });
 
-app.get("/filters", async (req, res) => {
-    let { filter } = req.query;
-    filter=filter.split("-")[1];
-    console.log(filter)
+admissionRouter.post("/filters", async (req, res) => {
+    let { filter } = req.body;
+    console.log(filter);
+    let result=[];
     if(filter)
     {
+        for(let word of filter){
+            console.log(word)
         const data =  await client.announcments.findMany({
             take:8,
             where:{
-                title:{
-                    contains:filter ,
+                location:{
+                    contains:word,
                     mode:"insensitive"
                 }
             },
@@ -50,9 +55,11 @@ app.get("/filters", async (req, res) => {
                 date:true
             }
         })
-        console.log(data)
+        result.push(data)
+    }
+
         res.json({
-            data: data,
+            data: result,
         });
     } else {
         res.json({
@@ -72,10 +79,4 @@ app.get("/filters", async (req, res) => {
     //     });
     //     result.push(...data);
     // }
-});
-
-app.get("/filter-location", (req, res) => {
-    const { filters } = req.query;
-    console.log(filters);
-    res.json({ msg: filters });
 });

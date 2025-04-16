@@ -53,7 +53,7 @@ function AdmissionsPage() {
         }
         getAnnouncements();
     }, [loading, page]);
-
+    console.log(admissions)
     return (
         <pageContext.Provider value={{ page, setPage }}>
             <div className="flex flex-col min-h-screen font-sans">
