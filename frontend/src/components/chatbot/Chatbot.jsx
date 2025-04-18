@@ -1,27 +1,103 @@
 import { useState, useRef, useEffect } from 'react';
 import ChatMessage from './ChatMessage';
 import OptionButton from './OptionButton';
-import axios from 'axios';
 
 const Chatbot = () => {
-  // Initial options to display
-  const initialOptions = [
-    { id: 'announcements', text: 'Latest Announcements', action: 'fetchAnnouncements' },
-    { id: 'exams', text: 'Upcoming Exams', action: 'fetchExams' },
-    { id: 'contact', text: 'Contact Information', action: 'showContacts' }
+  // User name state with localStorage persistence
+  const [userName, setUserName] = useState(() => localStorage.getItem('entrabot_username') || '');
+  const [askingName, setAskingName] = useState(() => !localStorage.getItem('entrabot_username'));
+  const [inputValue, setInputValue] = useState('');
+
+  // Initial options to display after name input
+  const mainOptions = [
+    { id: 'exam-announcements', text: 'Exam Announcements', action: 'showExamOptions' },
+    { id: 'admission-announcements', text: 'Admission Announcements', action: 'showAdmissionOptions' }
   ];
 
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hello! I'm your EntraBot. How can I help you today?", sender: 'bot', options: initialOptions }
-  ]);
+  // Exam options from the NavigationSidebar
+  const examOptions = [
+    { id: 'jee-main', text: 'JEE Main', action: 'navigateToExam', examId: 'jee-main' },
+    { id: 'jee-advanced', text: 'JEE Advanced', action: 'navigateToExam', examId: 'jee-advanced' },
+    { id: 'neet-ug', text: 'NEET UG', action: 'navigateToExam', examId: 'neet-ug' },
+    { id: 'gate', text: 'GATE', action: 'navigateToExam', examId: 'gate' },
+    { id: 'neet-pg', text: 'NEET PG', action: 'navigateToExam', examId: 'neet-pg' },
+    { id: 'cat', text: 'CAT', action: 'navigateToExam', examId: 'cat' },
+    { id: 'back-to-main', text: 'Back to Main Menu', action: 'showMainMenu' }
+  ];
+
+  // Admission location options from announcementsData.js
+  const locationOptions = [
+    { id: 'gujarat', text: 'Gujarat', action: 'navigateToAdmission', locationId: 'gujarat' },
+    { id: 'maharashtra', text: 'Maharashtra', action: 'navigateToAdmission', locationId: 'maharashtra' },
+    { id: 'karnataka', text: 'Karnataka', action: 'navigateToAdmission', locationId: 'karnataka' },
+    { id: 'west_bengal', text: 'West Bengal', action: 'navigateToAdmission', locationId: 'west_bengal' },
+    { id: 'telangana', text: 'Telangana', action: 'navigateToAdmission', locationId: 'telangana' },
+    { id: 'back-to-main', text: 'Back to Main Menu', action: 'showMainMenu' }
+  ];
+
+  const [messages, setMessages] = useState(() => {
+    // Initialize messages based on whether we already know the user
+    if (localStorage.getItem('entrabot_username')) {
+      return [
+        { 
+          id: 1, 
+          text: `Welcome back, ${localStorage.getItem('entrabot_username')}! How can I help you today?`, 
+          sender: 'bot',
+          options: mainOptions
+        }
+      ];
+    } else {
+      return [
+        { id: 1, text: "Hello! I'm your EntraBot. What's your name?", sender: 'bot' }
+      ];
+    }
+  });
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
   
   // Auto-scroll to the bottom when new messages are added
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Focus on input field when chat opens
+  useEffect(() => {
+    if (isOpen && askingName) {
+      inputRef.current?.focus();
+    }
+  }, [isOpen, askingName]);
+
+  // Handle name submission
+  const handleNameSubmit = (e) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+    
+    const name = inputValue.trim();
+    setUserName(name);
+    setAskingName(false);
+    
+    // Save name to localStorage for persistence
+    localStorage.setItem('entrabot_username', name);
+    
+    // Add user's name as a message
+    setMessages(prev => [...prev, { 
+      id: Date.now(), 
+      text: name, 
+      sender: 'user' 
+    }]);
+
+    // Welcome the user with their name and show main options
+    setTimeout(() => {
+      addBotMessage(
+        `Nice to meet you, ${name}! How can I help you today?`, 
+        mainOptions
+      );
+    }, 500);
+    
+    setInputValue('');
+  };
 
   // Handle when a user selects an option
   const handleOptionSelect = async (option) => {
@@ -37,30 +113,27 @@ const Chatbot = () => {
     try {
       // Handle the action based on what was selected
       switch(option.action) {
-        case 'fetchAnnouncements':
-          await fetchAnnouncements();
-          break;
-        case 'fetchExams':
-          await fetchExams();
-          break;
-        case 'showContacts':
-          showContactInfo();
-          break;
         case 'showMainMenu':
           showMainMenu();
           break;
-        case 'viewAllAnnouncements':
-          window.location.href = '/announcements';
+        case 'showExamOptions':
+          showExamOptions();
           break;
-        case 'viewAllExams':
-          window.location.href = '/exams';
+        case 'showAdmissionOptions':
+          showAdmissionOptions();
+          break;
+        case 'navigateToExam':
+          navigateToExam(option.examId);
+          break;
+        case 'navigateToAdmission':
+          navigateToAdmission(option.locationId);
           break;
         default:
-          addBotMessage("I'm not sure how to help with that yet.");
+          addBotMessage(`I'm not sure how to help with that yet, ${userName}.`);
       }
     } catch (error) {
       addBotMessage(
-        "Sorry, I encountered an error processing your request.",
+        `Sorry ${userName}, I encountered an error processing your request.`,
         [{ id: 'back', text: 'Back to Menu', action: 'showMainMenu' }]
       );
       console.error("Chatbot error:", error);
@@ -79,71 +152,45 @@ const Chatbot = () => {
     }]);
   };
 
-  // Fetch announcements from API
-  const fetchAnnouncements = async () => {
-    try {
-      const { data } = await axios.get("http://localhost:3000/announcements", {
-        params: { page: 1, limit: 3 }
-      });
-      
-      // Format the announcements data with links
-      const announcementsList = data.msg.map(a => 
-        `📢 ${a.title}\n📅 ${new Date(a.date).toLocaleDateString()}\n${a.tag ? `🏷️ ${a.tag}\n` : ''}🔗 [Link](${a.link})\n`
-      ).join('\n');
-      
-      addBotMessage(
-        `Here are the latest announcements:\n\n${announcementsList}`, 
-        [
-          { id: 'more', text: 'View All Announcements', action: 'viewAllAnnouncements' },
-          { id: 'back', text: 'Back to Menu', action: 'showMainMenu' }
-        ]
-      );
-    } catch (error) {
-      addBotMessage(
-        "Sorry, I couldn't fetch the announcements right now.", 
-        [{ id: 'back', text: 'Back to Menu', action: 'showMainMenu' }]
-      );
-      console.error("Announcement fetch error:", error);
-    }
+  // Show main menu with exam and admission options
+  const showMainMenu = () => {
+    addBotMessage(`What would you like to know about, ${userName}?`, mainOptions);
   };
 
-  // Fetch exams from API
-  const fetchExams = async () => {
-    try {
-      const { data } = await axios.get("http://localhost:3000/exams");
-      
-      // Format the exams data with links
-      const examsList = data.length ? data.map(e => 
-        `📝 ${e.name}\n📅 ${e.date}\n📌 Status: ${e.status}\n🔗 Details: ${e.link}\n`
-      ).join('\n') : "No exams scheduled at the moment.";
-      
-      addBotMessage(
-        `Here are the upcoming exams:\n\n${examsList}`, 
-        [
-          { id: 'more', text: 'View All Exams', action: 'viewAllExams' },
-          { id: 'back', text: 'Back to Menu', action: 'showMainMenu' }
-        ]
-      );
-    } catch (error) {
-      addBotMessage(
-        "Sorry, I couldn't fetch the exam information right now.",
-        [{ id: 'back', text: 'Back to Menu', action: 'showMainMenu' }]
-      );
-      console.error("Exams fetch error:", error);
-    }
-  };
-
-  // Show contact information
-  const showContactInfo = () => {
+  // Show exam announcement options
+  const showExamOptions = () => {
     addBotMessage(
-      "Contact Information:\n\n📧 Email: support@entra.edu\n📞 Phone: +91-123-456-7890\n📍 Address: Entra Education Center, Main Street, City\n\n🌐 Website: https://entra.edu\n💬 Social Media:\n- Twitter: https://twitter.com/entra\n- LinkedIn: https://linkedin.com/company/entra", 
-      [{ id: 'back', text: 'Back to Menu', action: 'showMainMenu' }]
+      `Which exam are you interested in, ${userName}?`, 
+      examOptions
     );
   };
 
-  // Show main menu
-  const showMainMenu = () => {
-    addBotMessage("What else can I help you with?", initialOptions);
+  // Show admission announcement options
+  const showAdmissionOptions = () => {
+    addBotMessage(
+      `Which location are you interested in for admissions, ${userName}?`, 
+      locationOptions
+    );
+  };
+
+  // Navigate to exam details page
+  const navigateToExam = (examId) => {
+    addBotMessage(
+      `I'll take you to the ${examId.replace(/-/g, ' ').toUpperCase()} exam details page, ${userName}.`,
+      [{ id: 'back', text: 'Back to Exams', action: 'showExamOptions' }]
+    );
+    // Navigate to exam details page using window.location to preserve state
+    window.location.href = `/exams/${examId}`;
+  };
+
+  // Navigate to admission page for specific location
+  const navigateToAdmission = (locationId) => {
+    addBotMessage(
+      `I'll show you admission information for ${locationId.replace(/_/g, ' ')} region, ${userName}.`,
+      [{ id: 'back', text: 'Back to Locations', action: 'showAdmissionOptions' }]
+    );
+    // Navigate to admissions page with location filter
+    window.location.href = `/admissions/${locationId}`;
   };
 
   // Toggle the chatbot open/closed
@@ -219,6 +266,32 @@ const Chatbot = () => {
             
             <div ref={messagesEndRef} />
           </div>
+          
+          {/* Name input form (only shown when asking for name) */}
+          {askingName && (
+            <form onSubmit={handleNameSubmit} className="p-3 border-t border-gray-200">
+              <div className="flex space-x-2">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Enter your name..."
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  type="submit"
+                  disabled={!inputValue.trim()}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-full disabled:opacity-50 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       )}
     </>

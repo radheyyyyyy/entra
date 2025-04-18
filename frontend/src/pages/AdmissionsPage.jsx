@@ -8,21 +8,25 @@ import axios from "axios";
 import { Pagination } from "../components/common/Pagination";
 import FiltersSidebar from "../components/admissions/FiltersSidebar";
 import { BACKEND_URL } from "../../config";
+import { useParams } from "react-router-dom";
 export const pageContext = createContext();
 function AdmissionsPage() {
     let [admissions, setAdmissions] = useState([]);
+
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [length, setLength] = useState(null);
     const cardsPerPage = 8;
     const [locationFilters, setLocationFilters] = useState(null);
+    const { location } = useParams();
+    
     useEffect(() => {
-        async function getFilteredLocationData() {
+        async function getFilteredLocationData(filter) {
             console.log(page);
 
             const { data } = await axios.get(`${BACKEND_URL}/admission/filters`, {
                 params: {
-                    filters: { location: locationFilters },
+                    filters: { location: filter },
                     limit: cardsPerPage,
                     page: page,
                 },
@@ -34,8 +38,13 @@ function AdmissionsPage() {
             }
             setAdmissions(data.msg);
         }
-        if (locationFilters!=null) {
-            getFilteredLocationData();
+        if (locationFilters != null) {
+            getFilteredLocationData(locationFilters);
+        }
+        else if(location != undefined)
+        {   
+            getFilteredLocationData(location)
+            setLocationFilters(location)
         }
     }, [locationFilters, page, loading]);
     useEffect(() => {
@@ -56,7 +65,7 @@ function AdmissionsPage() {
                 console.log(error.message);
             }
         }
-        if (locationFilters === null) {
+        if (locationFilters === null && location === undefined) {
             getAnnouncements();
         }
     }, [loading, page, locationFilters, length]);

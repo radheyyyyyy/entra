@@ -32,7 +32,7 @@ app.get("/", async (req, res) => {
 
 app.get("/filters", async (req, res) => {
     let { filter } = req.query;
-    filter=filter.split("-")[1];
+    // filter=filter.split("-")[1];
     console.log(filter)
     if(filter)
     {
